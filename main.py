@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -17,3 +18,13 @@ def get_post(post_id: int):
 @app.get("/users/{username}/posts")
 def get_user_info(username: str):
     return {"username" : username, "total_posts" : 0}
+
+class Post(BaseModel):
+    title: str
+    content: str
+    status: str = "Draft"
+    platform: str = "LinkedIn"
+    
+@app.post("/posts")
+def create_post(post: Post):
+    return {**post.model_dump(), "id": 1} 
