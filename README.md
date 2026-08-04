@@ -84,6 +84,7 @@ Below is a section-by-section explanation of the code.
 
 ```python
 from fastapi import FastAPI, Depends
+from pydantic import BaseModel
 from sqlmodel import SQLModel, Field, Session, create_engine, select
 from typing import Optional
 from fastapi import HTTPException
@@ -144,14 +145,14 @@ def get_user_info(username: str):
 ### 4. Lesson 2 — Pydantic request model
 
 ```python
-class Post(BaseModel):
+class PostIn(BaseModel):
     title: str
     content: str
     status: str = "Draft"
     platform: str = "LinkedIn"
 
 @app.post("/posts")
-def create_post(post: Post):
+def create_post(post: PostIn):
     return {**post.model_dump(), "id": 1}
 ```
 
